@@ -66,3 +66,22 @@ a {
 }
 
 /* Buttons */
+
+/* Hovers */
+
+.hover1:hover {
+  background: var(--bg-secondary);
+}
+
+.hover2:hover {
+  background: var(--bg-third);
+}
+
+/* Hovers */
+
+
+.card {
+  height: 500px;
+  width: 500px;
+  background: red;
+}
