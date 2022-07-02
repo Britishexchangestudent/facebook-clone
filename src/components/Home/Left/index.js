@@ -6,9 +6,16 @@ import { left } from "../../../data/home";
 import { Link } from "react-router-dom";
 import { ArrowDown1 } from "../../../svg";
 import Shortcut from "./Shortcut";
+import { useMediaQuery } from "react-responsive";
 
 function LeftHome({ user }) {
   const [visible, setVisible] = useState(false);
+
+  const query1030px = useMediaQuery({
+    query: "(max-width: 1175px)",
+  });
+
+const margin_left = query1030px ? '0px' : '12px'
 
   return (
     <div className="left_home">
