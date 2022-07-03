@@ -4,19 +4,21 @@ import CreatePost from "../../components/CreatePost";
 import Header from "../../components/Header";
 import LeftHome from "../../components/Home/Left";
 import RightHome from "../../components/Home/Right";
+import SendVerification from "../../components/Home/SendVerification";
 import Stories from "../../components/Home/Stories";
 
 import "./styles.css";
 
 function Home() {
-  const { user } = useSelector((user) => ({ ...user }));
+  const { user } = useSelector((state) => ({ ...state }));
   return (
     <div className="home">
       <Header />
       <LeftHome user={user} />
       <div className="home_middle">
         <Stories />
-        <CreatePost user={user}/>
+        {user.verified === false && <SendVerification user={user} />}
+        <CreatePost user={user} />
       </div>
       <RightHome />
     </div>
