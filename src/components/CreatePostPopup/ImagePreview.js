@@ -1,13 +1,38 @@
 import React, { useRef } from "react";
 import EmojiPickerBackgrounds from "./EmojiPickerBackgrounds";
 
-function ImagePreview({ text, user, setText, images, setImages, setShowPreview }) {
+function ImagePreview({
+  text,
+  user,
+  setText,
+  images,
+  setImages,
+  setShowPreview,
+  error,
+  setError,
+}) {
   const imageInputRef = useRef();
 
   const handleImages = (e) => {
     let files = Array.from(e.target.files);
 
     files.forEach((img) => {
+      if (
+        img.type !== "image/jpeg" &&
+        img.type !== "image/webp" &&
+        img.type !== "image/gif" &&
+        img.type !== "image/png"
+      ) {
+        setError(
+          `${img.name} for is unsupported. Only Jpeg, Png, Webp and Gif are allowed`
+        );
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      } else if (img.size > 1024 * 1024 * 5) {
+        setError(`${img.name} size is too large. Max 5mb allowed`);
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      }
       const reader = new FileReader();
       reader.readAsDataURL(img);
       reader.onload = (readerEvent) => {
@@ -22,6 +47,7 @@ function ImagePreview({ text, user, setText, images, setImages, setShowPreview }
       <div className="add_pics_wrap">
         <input
           type="file"
+          accept="image/jpeg, image/png, image/webp, image/gif"
           multiple
           hidden
           ref={imageInputRef}
@@ -75,9 +101,12 @@ function ImagePreview({ text, user, setText, images, setImages, setShowPreview }
           </div>
         ) : (
           <div className="add_pics_inside1">
-            <div className="small_white_circle" onClick={() => {
-                setShowPreview(false)
-            }}>
+            <div
+              className="small_white_circle"
+              onClick={() => {
+                setShowPreview(false);
+              }}
+            >
               <i className="exit_icon"></i>
             </div>
             <div

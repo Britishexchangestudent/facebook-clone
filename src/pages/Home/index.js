@@ -9,7 +9,7 @@ import Stories from "../../components/Home/Stories";
 
 import "./styles.css";
 
-function Home() {
+function Home({setCreatePostVisible}) {
   const { user } = useSelector((state) => ({ ...state }));
   return (
     <div className="home">
@@ -18,7 +18,7 @@ function Home() {
       <div className="home_middle">
         <Stories />
         {user.verified === false && <SendVerification user={user} />}
-        <CreatePost user={user} />
+        <CreatePost user={user} setCreatePostVisible={setCreatePostVisible} />
       </div>
       <RightHome />
     </div>

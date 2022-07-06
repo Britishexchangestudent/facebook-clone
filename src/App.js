@@ -8,16 +8,23 @@ import Activate from "./pages/Home/activate";
 import Reset from "./pages/Reset";
 import CreatePostPopup from "./components/CreatePostPopup";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function App() {
+  const [createPostVisible, setCreatePostVisible] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
   return (
     <div>
-      <CreatePostPopup user={user} />
+      {createPostVisible && <CreatePostPopup user={user} setCreatePostVisible={setCreatePostVisible} />}
+
       <Routes>
         <Route element={<LoggedInRoutes />}>
           <Route path="/profile" element={<Profile />} exact />
-          <Route path="/" element={<Home />} exact />
+          <Route
+            path="/"
+            element={<Home setCreatePostVisible={setCreatePostVisible} />}
+            exact
+          />
           <Route path="/activate/:token" element={<Activate />} exact />
         </Route>
         <Route element={<NotLoggedInRoutes />}>
