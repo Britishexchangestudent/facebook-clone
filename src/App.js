@@ -8,21 +8,79 @@ import Activate from "./pages/Home/activate";
 import Reset from "./pages/Reset";
 import CreatePostPopup from "./components/CreatePostPopup";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useReducer, useEffect } from "react";
+import axios from "axios";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "POSTS_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "POSTS_SUCCESS":
+      return { ...state, posts: action.payload, loading: false, error: "" };
+    case "POSTS_ERROR":
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+}
 
 function App() {
   const [createPostVisible, setCreatePostVisible] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
+
+  const [{ loading, error, posts }, dispatch] = useReducer(reducer, {
+    loading: false,
+    error: "",
+    posts: [],
+  });
+
+  const getAllPosts = async () => {
+    try {
+      dispatch({
+        type: "POSTS_REQUEST",
+      });
+
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/getAllPosts`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      dispatch({
+        type: "POSTS_SUCCESS",
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "POSTS_ERROR",
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
+
+
   return (
     <div>
-      {createPostVisible && <CreatePostPopup user={user} setCreatePostVisible={setCreatePostVisible} />}
+      {createPostVisible && (
+        <CreatePostPopup
+          user={user}
+          setCreatePostVisible={setCreatePostVisible}
+        />
+      )}
 
       <Routes>
         <Route element={<LoggedInRoutes />}>
           <Route path="/profile" element={<Profile />} exact />
           <Route
             path="/"
-            element={<Home setCreatePostVisible={setCreatePostVisible} />}
+            element={<Home setCreatePostVisible={setCreatePostVisible} posts={posts} />}
             exact
           />
           <Route path="/activate/:token" element={<Activate />} exact />

@@ -1,5 +1,5 @@
 .home {
-  min-height: 100vh;
+  height: 100%;
   background: var(--bg-secondary);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -15,7 +15,7 @@
 @media (max-width: 1175px) {
   .stories,
   .createPost,
-  .send_verification {
+  .post, .send_verification {
     width: 84% !important;
   }
 
@@ -68,7 +68,7 @@
 
   .stories,
   .createPost,
-  .send_verification {
+  .post, .send_verification {
     width: 100% !important;
   }
 }
@@ -76,7 +76,7 @@
 @media (max-width: 950px) {
   .stories,
   .createPost,
-  .send_verification {
+  .post, .send_verification {
     width: 93% !important;
   }
 
@@ -104,7 +104,7 @@
   }
 
   .createPost,
-  .send_verification {
+  .post, .send_verification {
     width: 110% !important;
   }
   .stories {
@@ -153,7 +153,7 @@
 
   .stories,
   .createPost,
-  .send_verification {
+  .post, .send_verification {
     width: 100% !important;
 
   }
