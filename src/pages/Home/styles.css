@@ -1,6 +1,6 @@
 .home {
   height: 100%;
-  background: var(--bg-secondary);
+  /* background: var(--bg-secondary); */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
@@ -108,13 +108,13 @@
     width: 110% !important;
   }
   .stories {
-    width: 110% !important;
+    width: 112% !important;
   }
 }
 
 @media (max-width: 810px) {
   .stories {
-    grid-template-columns: repeat(6, 13vw);
+    grid-template-columns: repeat(6, 12.7vw);
   }
 
   .story_profile_name,

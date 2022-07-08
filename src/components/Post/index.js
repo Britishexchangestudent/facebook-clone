@@ -4,9 +4,13 @@ import Moment from "react-moment";
 import "./styles.css";
 import { Dots, Public } from "../../svg";
 import ReactsPopup from "./ReactsPopup";
+import CreateComment from "./CreateComment";
+import PostMenu from "./PostMenu";
 
 function Post({ post }) {
   const [visible, setVisible] = useState(false);
+
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div className="post">
@@ -42,7 +46,10 @@ function Post({ post }) {
           </div>
         </Link>
 
-        <div className="post_header_right hover1">
+        <div
+          className="post_header_right hover1"
+          onClick={() => setShowMenu((prev) => !prev)}
+        >
           <Dots color="#828387" />
         </div>
       </div>
@@ -132,6 +139,12 @@ function Post({ post }) {
           <span>Share</span>
         </div>
       </div>
+
+      <div className="comments_wrap">
+        <div className="comments_order"></div>
+        <CreateComment />
+      </div>
+      {showMenu && <PostMenu post={post} setShowMenu={setShowMenu} />}
 
       {/* -------------------------------- FOOTER -------------------------------- */}
     </div>
