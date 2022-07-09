@@ -22,7 +22,7 @@ function UserMenu({ user }) {
     <div className="mmenu">
       {visible === 0 && (
         <div>
-          <Link className="mmenu_header hover1" to="/">
+          <Link className="mmenu_header hover1" to="/profile">
             <img src={user?.picture} alt="" />
             <div className="mmenu_col">
               <span>

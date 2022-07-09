@@ -53,7 +53,7 @@ function CreatePostPopup({ user, setCreatePostVisible }) {
         return dataURItoBlob(img);
       });
 
-      const path = `${user.username}/post Images`;
+      const path = `${user.username}/post_images`;
 
       let formData = new FormData();
 

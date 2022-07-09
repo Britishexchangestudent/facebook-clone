@@ -555,8 +555,6 @@ header {
   }
 }
 @media (max-width: 620px) {
-
-
   .all_menu {
     width: 500px;
   }
@@ -590,7 +588,6 @@ header {
   .middle_icon:nth-child(1) {
     display: none;
   }
-  
 }
 
 @media (max-width: 510px) {
@@ -601,7 +598,6 @@ header {
   .all_menu_wrap {
     grid-template-columns: 1fr !important;
   }
-
 
   .all_left {
     width: 97%;
@@ -636,8 +632,6 @@ header {
 
 /* responsive */
 
-
-
 /* active header */
 
 .active_header {
@@ -646,6 +640,11 @@ header {
 
 .active_header svg {
   fill: var(--blue-color);
+}
+
+.active_link {
+  background: var(--light-blue-color);
+  color: var(--blue-color);
 }
 
 /* active header */

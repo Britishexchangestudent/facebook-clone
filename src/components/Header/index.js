@@ -3,6 +3,7 @@ import {
   ArrowDown,
   Friends,
   Gaming,
+  Home,
   HomeActive,
   Logo,
   Market,
@@ -20,7 +21,7 @@ import AllMenu from "./AllMenu";
 import useClickOutside from "../../helpers/clickOutside";
 import UserMenu from "./UserMenu/UserMenu";
 
-function Header() {
+function Header({ page }) {
   const [showSearchMenu, setShowSearchMenu] = useState(false);
   const [showAllMenu, setShowAllMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -66,8 +67,11 @@ function Header() {
       {/* MIDDLE SECTION */}
 
       <div className="header_middle">
-        <Link to="/" className="middle_icon active">
-          <HomeActive />
+        <Link
+          to="/"
+          className={`middle_icon ${page === "home" ? "active" : "hover1"}`}
+        >
+          {page === "home" ? <HomeActive /> : <Home color={color} />}
         </Link>
         <Link to="/" className="middle_icon hover1">
           <Friends color={color} />
@@ -89,12 +93,20 @@ function Header() {
       {/* RIGHT SIDE */}
 
       <div className="header_right">
-        <Link to="/" className="profile_link hover1">
+        <Link
+          to="/profile"
+          className={`profile_link hover1 ${
+            page === "profile" ? "active_link" : ""
+          }`}
+        >
           <img src={user?.picture} alt="user" />
           <span>{user?.first_name}</span>
         </Link>
 
-        <div className={`circle_icon hover1 ${showAllMenu && 'active_header'}`} ref={allMenu}>
+        <div
+          className={`circle_icon hover1 ${showAllMenu && "active_header"}`}
+          ref={allMenu}
+        >
           <div
             onClick={() => {
               setShowAllMenu((prev) => !prev);
@@ -111,7 +123,10 @@ function Header() {
           <Notifications />
           <div className="right_notification">5</div>
         </div>
-        <div className={`circle_icon hover1 ${showUserMenu && 'active_header'}`} ref={userMenu}>
+        <div
+          className={`circle_icon hover1 ${showUserMenu && "active_header"}`}
+          ref={userMenu}
+        >
           <div onClick={() => setShowUserMenu((prev) => !prev)}>
             <ArrowDown />
           </div>
