@@ -54,6 +54,22 @@ a {
   cursor: pointer;
   background: var(--blue-color);
 }
+.light_blue_btn {
+  border: none;
+  outline: none;
+  padding: 8.5px 12px;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  background: var(--light-blue-color);
+}
 .gray_btn {
   border: none;
   outline: none;
@@ -101,3 +117,11 @@ a {
   width: 500px;
   background: red;
 }
+
+/*----filters---*/
+.filter_blue {
+  filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%)
+    saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg)
+    brightness(97%) contrast(96%);
+}
+/*----filters---*/

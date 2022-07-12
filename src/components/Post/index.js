@@ -7,13 +7,13 @@ import ReactsPopup from "./ReactsPopup";
 import CreateComment from "./CreateComment";
 import PostMenu from "./PostMenu";
 
-function Post({ post }) {
+function Post({ post, profile }) {
   const [visible, setVisible] = useState(false);
 
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="post">
+    <div className="post" style={{ width: `${profile && "100%"}` }}>
       {/* -------------------------------- HEADER -------------------------------- */}
 
       <div className="post_header">
