@@ -8,6 +8,7 @@ import CreateComment from "./CreateComment";
 import PostMenu from "./PostMenu";
 
 function Post({ post, profile }) {
+  console.log(`post@@`, post);
   const [visible, setVisible] = useState(false);
 
   const [showMenu, setShowMenu] = useState(false);
@@ -58,7 +59,7 @@ function Post({ post, profile }) {
 
       {/* -------------------------------- BACKGROUND -------------------------------- */}
 
-      {post.background ? (
+      {post?.background ? (
         <div
           className="post_bg"
           style={{ backgroundImage: `url(${post.background})` }}

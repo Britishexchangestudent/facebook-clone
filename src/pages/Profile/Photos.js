@@ -1,12 +1,11 @@
 import React, { useEffect, useReducer } from "react";
 import { photosReducer } from "../../functions/reducers";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Photos({ username }) {
   const { user } = useSelector((state) => ({ ...state }));
-  const navigate = useNavigate();
+
   const [{ loading, error, photos }, dispatch] = useReducer(photosReducer, {
     loading: false,
     error: "",
@@ -45,8 +44,6 @@ function Photos({ username }) {
   useEffect(() => {
     getPhotos();
   }, [username]);
-
-  console.log(`photos`, photos);
 
   return (
     <div className="profile_card">

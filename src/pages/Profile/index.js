@@ -67,6 +67,8 @@ function Profile({ setCreatePostVisible }) {
 
   console.log(`profile`, profile);
 
+  console.log(`profile.posts`, profile.posts)
+
   return (
     <div className="profile">
       <Header page="profile" />
