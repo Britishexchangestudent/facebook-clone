@@ -8,7 +8,6 @@ import CreateComment from "./CreateComment";
 import PostMenu from "./PostMenu";
 
 function Post({ post, profile }) {
-  console.log(`post@@`, post);
   const [visible, setVisible] = useState(false);
 
   const [showMenu, setShowMenu] = useState(false);
@@ -66,7 +65,7 @@ function Post({ post, profile }) {
         >
           <div className="post_bg_text">{post.text}</div>
         </div>
-      ) : (
+      ) : post.type === null ? (
         <div>
           <div className="post_text">{post.text}</div>
           {post.images && post.images.length && (
@@ -95,6 +94,19 @@ function Post({ post, profile }) {
             </div>
           )}
         </div>
+      ) : post.type === "profilePicture" ? (
+        <div className="post_profile_wrap">
+          <div className="post_updated_bg">
+            <img src={post.user.cover} alt="" />
+          </div>
+          <img
+            className="post_updated_picture"
+            src={post.images[0].url}
+            alt=""
+          ></img>
+        </div>
+      ) : (
+        <div className="post_cover_wrap">post cover wrap</div>
       )}
 
       {/* -------------------------------- BACKGROUND -------------------------------- */}

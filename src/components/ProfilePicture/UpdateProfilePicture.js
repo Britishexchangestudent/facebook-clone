@@ -1,15 +1,28 @@
 import React, { useCallback, useRef, useState } from "react";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../helpers/getCroppedImg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uploadImages } from "../../functions/uploadImages";
 import { updateProfilePic } from "../../functions/user";
 import { createPost } from "../../functions/post";
+import ClipLoader from "react-spinners/ClipLoader";
+import Cookies from "js-cookie";
 
-function UpdateProfilePicture({ image, setImage, setShow, error, setError }) {
+function UpdateProfilePicture({
+  profileRef,
+  image,
+  setImage,
+  setShow,
+  error,
+  setError,
+}) {
+  const dispatch = useDispatch();
+  
+
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [loading, setLoading] = useState(false);
   const sliderRef = useRef();
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -36,10 +49,7 @@ function UpdateProfilePicture({ image, setImage, setShow, error, setError }) {
           setCrop({ x: 0, y: 0 });
 
           setImage(img);
-          console.log(`img`, img);
-          console.log(`show`);
         } else {
-          console.log(`img`, img);
           setImage(img);
 
           return img;
@@ -53,6 +63,7 @@ function UpdateProfilePicture({ image, setImage, setShow, error, setError }) {
 
   const updateProfilePicture = async () => {
     try {
+      setLoading(true);
       let img = await getCroppedImage();
 
       let blob = await fetch(img).then((b) => b.blob());
@@ -75,15 +86,32 @@ function UpdateProfilePicture({ image, setImage, setShow, error, setError }) {
           user.token
         );
         if (new_post === "data") {
+          setTimeout(() => {
+            setLoading(false);
+            setImage("");
+            profileRef.current.style.backgroundImage = `url(${res[0].url})`;
+            Cookies.set(
+              "user",
+              JSON.stringify({
+                ...user,
+                picture: res[0].url,
+              })
+            );
+            dispatch({ type: "UPDATEPICTURE", payload: res[0].url });
+            setShow(false);
+          }, 2000);
         } else {
           setError(new_post);
           console.log(`babababa`);
+          setLoading(false);
         }
       } else {
         setError(updatedPic);
         console.log(`wawawawawa`);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       setError(error.response.data.error);
       console.log(`zazazaaza`);
     }
@@ -154,9 +182,25 @@ function UpdateProfilePicture({ image, setImage, setShow, error, setError }) {
         Your profile picture is public
       </div>
       <div className="update_submit_wrap">
-        <div className="blue_link">Cancel</div>
-        <button className="blue_btn" onClick={() => updateProfilePicture()}>
-          Save
+        <div
+          className="blue_link"
+          onClick={() => {
+            setShow(false);
+            setImage("");
+          }}
+        >
+          Cancel
+        </div>
+        <button
+          className="blue_btn"
+          disabled={loading}
+          onClick={() => updateProfilePicture()}
+        >
+          {loading ? (
+            <ClipLoader color="#fff" loading={loading} size={10} />
+          ) : (
+            "Save"
+          )}
         </button>
       </div>
     </div>

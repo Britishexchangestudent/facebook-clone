@@ -17,6 +17,7 @@ import Friends from "./Friends";
 
 function Profile({ setCreatePostVisible }) {
   const navigate = useNavigate();
+  const [photos, setPhotos] = useState({});
 
   const { username } = useParams();
 
@@ -29,6 +30,10 @@ function Profile({ setCreatePostVisible }) {
     error: "",
     profile: {},
   });
+
+  const path = `${userName}/*`;
+  const max = 30;
+  const sort = "desc";
 
   const getProfile = async () => {
     try {
@@ -46,6 +51,18 @@ function Profile({ setCreatePostVisible }) {
       if (data.ok === false) {
         navigate("/profile");
       } else {
+        try {
+          const images = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/listImages`,
+            { path, sort, max },
+            {
+              headers: { Authorization: `Bearer ${user?.token}` },
+            }
+          );
+          setPhotos(images.data);
+        } catch (error) {
+          console.log(`error`, error);
+        }
         dispatch({
           type: "PROFILE_SUCCESS",
           payload: data,
@@ -59,15 +76,13 @@ function Profile({ setCreatePostVisible }) {
     }
   };
 
+  console.log(`photos`, photos);
+
   useEffect(() => {
     getProfile();
   }, [userName]);
 
   var visitor = userName === user.username ? false : true;
-
-  console.log(`profile`, profile);
-
-  console.log(`profile.posts`, profile.posts)
 
   return (
     <div className="profile">
@@ -76,7 +91,7 @@ function Profile({ setCreatePostVisible }) {
       <div className="profile_top">
         <div className="profile_container">
           <Cover cover={profile?.cover} visitor={visitor} />
-          <ProfilePictureInfo profile={profile} visitor={visitor} />
+          <ProfilePictureInfo profile={profile} visitor={visitor} photos={photos.resources} />
           <ProfileMenu />
         </div>
       </div>
@@ -87,7 +102,7 @@ function Profile({ setCreatePostVisible }) {
             <PplYouMayKnow />
             <div className="profile_grid">
               <div className="profile_left">
-                <Photos username={userName} />
+                <Photos username={userName} photos={photos} />
                 <Friends friends={profile.friends} />
                 <div className={`fb_copyright ${"relative_fb_copyright"}`}>
                   <Link to="/">Privacy </Link>

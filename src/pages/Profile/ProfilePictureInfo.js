@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProfilePicture from "../../components/ProfilePicture";
 
-function ProfilePictureInfo({ profile, visitor }) {
-  console.log(`profile`, profile)
+function ProfilePictureInfo({ profile, visitor, photos }) {
+  const profileRef = useRef(null)
   const [show, setShow] = useState(false);
   return (
     <div className="profile_img_wrap">
     {
       show && (
-        <ProfilePicture setShow={setShow} />
+        <ProfilePicture setShow={setShow} profileRef={profileRef} photos={photos} />
       )
     }
       <div className="profile_w_left">
         <div className="profile_w_img" onClick={() => setShow(true)}>
           <div
             className="profile_w_bg"
+            ref={profileRef}
             style={{
               backgroundSize: "cover",
               backgroundImage: `url(${profile?.picture})`,
