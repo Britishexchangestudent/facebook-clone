@@ -30,7 +30,7 @@ function Post({ post, profile }) {
                   `updated ${
                     post.user.gender === "male" ? "his" : "her"
                   } profile picture`}
-                {post.type === "cover" &&
+                {post.type === "coverPicture" &&
                   `updated ${
                     post.user.gender === "male" ? "his" : "her"
                   } cover picture`}
@@ -106,7 +106,9 @@ function Post({ post, profile }) {
           ></img>
         </div>
       ) : (
-        <div className="post_cover_wrap">post cover wrap</div>
+        <div className="post_cover_wrap">
+          <img src={post.images[0].url} alt="" />
+        </div>
       )}
 
       {/* -------------------------------- BACKGROUND -------------------------------- */}

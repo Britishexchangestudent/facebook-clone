@@ -500,7 +500,13 @@
   left: 0;
   height: 300px;
   width: 100%;
-  background: var(--bg-third)
+  background: var(--bg-third);
+}
+
+.post_updated_bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .post_updated_picture {
@@ -510,6 +516,17 @@
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--bg-primary);
+}
+
+.post_cover_wrap {
+  width: 100%;
+  height: 400px;
+}
+
+.post_cover_wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* --------- POST MENU --------- */

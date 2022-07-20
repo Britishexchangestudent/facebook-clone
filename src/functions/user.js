@@ -1,14 +1,28 @@
 import axios from "axios";
 
-export const updateProfilePic = async (
-  url,
-  token
-) => {
+export const updateProfilePic = async (url, token) => {
   try {
     const { data } = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/updateProfilePicture`,
       {
-       url
+        url,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return "data";
+  } catch (error) {
+    return error.response.data.message;
+  }
+};
+
+export const updateCover = async (url, token) => {
+  try {
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/updateCover`,
+      {
+        url,
       },
       {
         headers: { Authorization: `Bearer ${token}` },
