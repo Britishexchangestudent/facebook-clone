@@ -2,18 +2,21 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Bio from "./Bio";
+import EditDetails from "./EditDetails";
 import "./styles.css";
 
-function Intro({ detailss, visitor }) {
+function Intro({ detailss, visitor, setOthername }) {
   const [details, setDetails] = useState(detailss);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     setDetails(detailss);
+    setInfos(detailss);
   }, [detailss]);
 
   const initial = {
     bio: details?.bio ? details.bio : "",
-    othername: details?.othername ? details.othername : "",
+    otherName: details?.otherName ? details.otherName : "",
     job: details?.job ? details.job : "",
     workplace: details?.workplace ? details.workplace : "",
     highSchool: details?.highSchool ? details.highSchool : "",
@@ -28,12 +31,9 @@ function Intro({ detailss, visitor }) {
   const [showBio, setShowBio] = useState(false);
   const [max, setMax] = useState(infos?.bio ? 100 - infos?.bio.length : 100);
 
-  const { user } = useSelector((state) => ({ ...state }));
+  console.log(`infos`, infos);
 
-  const handleBioChange = (e) => {
-    setInfos({ ...infos, bio: e.target.value });
-    setMax(100 - e.target.value.length);
-  };
+  const { user } = useSelector((state) => ({ ...state }));
 
   const updateDetails = async () => {
     try {
@@ -48,9 +48,16 @@ function Intro({ detailss, visitor }) {
       );
       setShowBio(false);
       setDetails(data);
+      setOthername(data.otherName);
     } catch (error) {
       console.log(`error`, error);
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInfos({ ...infos, [name]: value });
+    setMax(100 - e.target.value.length);
   };
 
   return (
@@ -71,13 +78,24 @@ function Intro({ detailss, visitor }) {
         </div>
       )}
 
+      {!details?.bio && !showBio && !visitor && (
+        <button
+          className="gray_btn hover1 w100"
+          onClick={() => setShowBio(true)}
+        >
+          Add Bio
+        </button>
+      )}
+
       {showBio && (
         <Bio
           infos={infos}
-          handleBioChange={handleBioChange}
+          handleChange={handleChange}
           max={max}
           setShowBio={setShowBio}
           updateDetails={updateDetails}
+          placeholder="Add Bio"
+          name="bio"
         />
       )}
 
@@ -150,7 +168,22 @@ function Intro({ detailss, visitor }) {
       )}
 
       {!visitor && (
-        <button className="gray_btn hover1 w100">Edit Details</button>
+        <button
+          className="gray_btn hover1 w100"
+          onClick={() => setVisible(true)}
+        >
+          Edit Details
+        </button>
+      )}
+
+      {visible && !visitor && (
+        <EditDetails
+          details={details}
+          handleChange={handleChange}
+          updateDetails={updateDetails}
+          infos={infos}
+          setVisible={setVisible}
+        />
       )}
       {!visitor && (
         <button className="gray_btn hover1 w100">Add Hobbies</button>

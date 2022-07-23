@@ -85,6 +85,12 @@ function Profile({ setCreatePostVisible }) {
 
   var visitor = userName === user.username ? false : true;
 
+  const [othername, setOthername] = useState();
+
+  useEffect(() => {
+    setOthername(profile?.details?.otherName);
+  }, [profile]);
+
   return (
     <div className="profile">
       <Header page="profile" />
@@ -100,6 +106,7 @@ function Profile({ setCreatePostVisible }) {
             profile={profile}
             visitor={visitor}
             photos={photos.resources}
+            othername={othername}
           />
           <ProfileMenu />
         </div>
@@ -111,7 +118,7 @@ function Profile({ setCreatePostVisible }) {
             <PplYouMayKnow />
             <div className="profile_grid">
               <div className="profile_left">
-                <Intro detailss={profile.details} visitor={visitor} />
+                <Intro detailss={profile.details} visitor={visitor} setOthername={setOthername} />
                 <Photos username={userName} photos={photos} />
                 <Friends friends={profile.friends} />
                 <div className={`fb_copyright ${"relative_fb_copyright"}`}>

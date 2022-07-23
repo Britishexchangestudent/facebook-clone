@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
 import ProfilePicture from "../../components/ProfilePicture";
 
-function ProfilePictureInfo({ profile, visitor, photos }) {
-  const profileRef = useRef(null)
+function ProfilePictureInfo({ profile, visitor, photos, othername }) {
+  const profileRef = useRef(null);
   const [show, setShow] = useState(false);
   return (
     <div className="profile_img_wrap">
-    {
-      show && (
-        <ProfilePicture setShow={setShow} profileRef={profileRef} photos={photos} />
-      )
-    }
+      {show && (
+        <ProfilePicture
+          setShow={setShow}
+          profileRef={profileRef}
+          photos={photos}
+        />
+      )}
       <div className="profile_w_left">
         <div className="profile_w_img" onClick={() => setShow(true)}>
           <div
@@ -30,7 +32,7 @@ function ProfilePictureInfo({ profile, visitor, photos }) {
         <div className="profile_w_col">
           <div className="profile_name">
             {profile?.first_name} {profile?.last_name}
-            <div className="othername">(orthello)</div>
+            <div className="othername">{othername && `(${othername})`}</div>
           </div>
           <div className="profile_friend_count"></div>
           <div className="profile_friend_img"></div>
