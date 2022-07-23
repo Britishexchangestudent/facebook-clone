@@ -7,10 +7,12 @@ import { useSelector } from "react-redux";
 import { updateCover } from "../../functions/user";
 import { createPost } from "../../functions/post";
 import ClipLoader from "react-spinners/ClipLoader";
+import OldCovers from "./OldCovers";
 
-function Cover({ cover, visitor }) {
+function Cover({ cover, visitor, photos }) {
   const [showCoverMenu, setShowCoverMenu] = useState(false);
   const [coverPic, setCoverPic] = useState("");
+  const [show, setShow] = useState(false);
   const [error, setError] = useState("");
   const menuRef = useRef();
   const refInput = useRef();
@@ -148,7 +150,12 @@ function Cover({ cover, visitor }) {
             Your cover photo is public.
           </div>
           <div className="save_changes_right">
-            <button className="blue_btn opactiy_btn">Cancel</button>
+            <button
+              className="blue_btn opactiy_btn"
+              onClick={() => setCoverPic("")}
+            >
+              Cancel
+            </button>
             <button className="blue_btn" onClick={() => updateCoverPic()}>
               {loading ? (
                 <ClipLoader color="#fff" loading={loading} size={8} />
@@ -189,7 +196,9 @@ function Cover({ cover, visitor }) {
           />
         </div>
       )}
-      {cover && !coverPic && <img src={cover} alt="" className="cover" ref={cRef} />}
+      {cover && !coverPic && (
+        <img src={cover} alt="" className="cover" ref={cRef} />
+      )}
       {!visitor && (
         <div className="update_cover_wrapper">
           <div
@@ -201,7 +210,10 @@ function Cover({ cover, visitor }) {
           </div>
           {showCoverMenu && (
             <div className="open_cover_menu" ref={menuRef}>
-              <div className="open_cover_menu_item hover1">
+              <div
+                className="open_cover_menu_item hover1"
+                onClick={() => setShow(true)}
+              >
                 <i className="photo_icon"></i>
                 Select Photo
               </div>
@@ -215,6 +227,13 @@ function Cover({ cover, visitor }) {
             </div>
           )}
         </div>
+      )}
+      {show && (
+        <OldCovers
+          photos={photos}
+          setCoverPic={setCoverPic}
+          setShow={setShow}
+        />
       )}
     </div>
   );

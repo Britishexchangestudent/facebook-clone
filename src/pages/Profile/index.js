@@ -14,6 +14,7 @@ import Post from "../../components/Post/index";
 import GridPosts from "./GridPosts";
 import Photos from "./Photos";
 import Friends from "./Friends";
+import Intro from "../../components/Intro";
 
 function Profile({ setCreatePostVisible }) {
   const navigate = useNavigate();
@@ -90,8 +91,16 @@ function Profile({ setCreatePostVisible }) {
 
       <div className="profile_top">
         <div className="profile_container">
-          <Cover cover={profile?.cover} visitor={visitor} />
-          <ProfilePictureInfo profile={profile} visitor={visitor} photos={photos.resources} />
+          <Cover
+            cover={profile?.cover}
+            visitor={visitor}
+            photos={photos.resources}
+          />
+          <ProfilePictureInfo
+            profile={profile}
+            visitor={visitor}
+            photos={photos.resources}
+          />
           <ProfileMenu />
         </div>
       </div>
@@ -102,6 +111,7 @@ function Profile({ setCreatePostVisible }) {
             <PplYouMayKnow />
             <div className="profile_grid">
               <div className="profile_left">
+                <Intro detailss={profile.details} visitor={visitor} />
                 <Photos username={userName} photos={photos} />
                 <Friends friends={profile.friends} />
                 <div className={`fb_copyright ${"relative_fb_copyright"}`}>
