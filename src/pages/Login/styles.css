@@ -324,8 +324,13 @@
   }
 }
 
-/* MEDIA QUERIES */
+@media (max-width: 390px) {
+  .sign_extra {
+    display: none;
+  }
+}
 
+/* MEDIA QUERIES */
 
 /* ERROR AND SUCCESS STYLE */
 
@@ -334,8 +339,7 @@
 }
 
 .success_text {
-  color: var(--green-color)
+  color: var(--green-color);
 }
-
 
 /* ERROR AND SUCCESS STYLE */

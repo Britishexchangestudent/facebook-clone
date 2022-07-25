@@ -68,7 +68,7 @@
 }
 
 .infosBox {
-  height: 82vh;
+  height: 670px;
   width: 800px !important;
 }
 
@@ -129,4 +129,22 @@
   margin: 10px 0;
   padding: 0 10px;
   border-radius: 5px;
+}
+
+@media (max-width: 810px) {
+  .infosBox {
+    width: 96% !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .postBox.infosBox {
+    height: 650px;
+    overflow-y: auto;
+  }
+
+  .details_wrapper {
+    height: 640px;
+    overflow-y: auto;
+  }
 }

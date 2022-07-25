@@ -462,7 +462,6 @@
   border-bottom: 3px solid var(--blue-color);
 }
 
-
 @media (max-width: 900px) {
   .profile_w_left {
     flex-direction: column;
@@ -491,8 +490,50 @@
     flex-direction: column;
   }
 
+  .pplumayknow {
+    display: none;
+  }
+
   .profile_grid {
     grid-template-columns: 1fr;
-    width: 95%;
   }
+
+  .profile_grid .createPost {
+    width: 100% !important;
+  }
+
+  .bottom_container {
+    padding: 5px;
+  }
+
+  .post {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 650px) {
+  .profile_menu_wrap {
+    display: none;
+  }
+}
+
+@media (max-width: 510px) {
+  .update_cover_wrap {
+    bottom: 3rem;
+  }
+}
+
+.scrollFixed .profile_left {
+  position: fixed;
+  width: 360px;
+}
+.scrollFixed .profile_right {
+  margin-left: 370px;
+  width: 504px;
+}
+.showLess .profile_left {
+  bottom: 10px;
+}
+.showMore .profile_left {
+  top: 54px;
 }
