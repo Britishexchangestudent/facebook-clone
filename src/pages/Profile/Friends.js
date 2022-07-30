@@ -1,8 +1,5 @@
-import React, { useEffect, useReducer } from "react";
-import { photosReducer } from "../../functions/reducers";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Friends({ friends }) {
   return (
@@ -20,7 +17,20 @@ function Friends({ friends }) {
             : `${friends?.length} friends`}
         </div>
       )}
-      <div className="profile_card_grid"></div>
+      <div className="profile_card_grid">
+        {friends &&
+          friends.slice(0, 9).map((friend) => (
+            <Link
+              to={`/profile/${friend.username}`}
+              className="profile_photo_card"
+            >
+              <img src={friend?.picture} alt="" />
+              <span>
+                {friend?.first_name} {friend?.last_name}
+              </span>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 }

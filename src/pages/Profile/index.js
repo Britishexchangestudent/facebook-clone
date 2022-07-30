@@ -16,6 +16,7 @@ import Photos from "./Photos";
 import Friends from "./Friends";
 import Intro from "../../components/Intro";
 import { useMediaQuery } from "react-responsive";
+import useClickOutside from "../../helpers/clickOutside";
 
 function Profile({ setCreatePostVisible }) {
   const navigate = useNavigate();
@@ -78,8 +79,6 @@ function Profile({ setCreatePostVisible }) {
     }
   };
 
-  console.log(`photos`, photos);
-
   useEffect(() => {
     getProfile();
   }, [userName]);
@@ -98,11 +97,12 @@ function Profile({ setCreatePostVisible }) {
   const [leftHeight, setLeftHeight] = useState();
   const [scrollHeight, setScrollHeight] = useState();
   useEffect(() => {
-    setHeight(profileTop?.current?.clientHeight + 300);
-    setLeftHeight(leftSide?.current?.clientHeight);
+    setHeight(profileTop.current.clientHeight + 300);
+    setLeftHeight(leftSide.current.clientHeight);
     window.addEventListener("scroll", getScroll, { passive: true });
-
-    return () => {};
+    return () => {
+      window.addEventListener("scroll", getScroll, { passive: true });
+    };
   }, [loading, scrollHeight]);
 
   const check = useMediaQuery({
@@ -112,8 +112,6 @@ function Profile({ setCreatePostVisible }) {
   const getScroll = () => {
     setScrollHeight(window.pageYOffset);
   };
-
-  console.log(`height`, height);
 
   return (
     <div className="profile">

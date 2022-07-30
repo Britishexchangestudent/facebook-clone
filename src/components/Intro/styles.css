@@ -1,3 +1,7 @@
+.postBox .infosBox {
+  z-index: 999999;
+}
+
 .info_profile {
   display: flex;
   align-items: center;
