@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import Picker from "emoji-picker-react";
 import { useSelector } from "react-redux";
+import { comment } from "../../functions/post";
+import { uploadImages } from "../../functions/uploadImages";
+import dataURItoBlob from "../../helpers/dataURItoBlob";
+import ClipLoader from "react-spinners/ClipLoader";
 
-function CreateComment() {
+function CreateComment({ postId, setCount, setComments }) {
   const [text, setText] = useState("");
   const [picker, setPicker] = useState(false);
   const [cursorPosition, setCursorPosition] = useState();
   const [error, setError] = useState("");
   const [commentImage, setCommentImage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const textRef = useRef();
   const imgInput = useRef();
@@ -49,6 +54,50 @@ function CreateComment() {
       setCommentImage(event.target.result);
     };
   };
+
+  const handleComment = async (e) => {
+    if (e.key === "Enter") {
+      if (commentImage != "") {
+        setLoading(true);
+        const img = dataURItoBlob(commentImage);
+
+        const path = `${user.username}/post_images/${postId}/commentImages`;
+
+        let formData = new FormData();
+
+        formData.append("path", path);
+
+        formData.append("file", img);
+
+        const imgComments = await uploadImages(formData, path, user.token);
+        const comments = await comment(
+          postId,
+          text,
+          imgComments[0].url,
+          user.token
+        );
+
+        setTimeout(() => {
+          setLoading(false);
+          setText("");
+          setCommentImage("");
+          setComments(comments)
+          setCount((prev) => ++prev)
+        }, 1000);
+      } else {
+        setLoading(true);
+        const comments = await comment(postId, text, "", user.token);
+        setTimeout(() => {
+          setLoading(false);
+          setText("");
+          setCommentImage("");
+          setComments(comments);
+          setCount((prev) => ++prev)
+        }, 1000);
+      }
+    }
+  };
+
   return (
     <div className="create_comment_wrap">
       <div className="create_comment">
@@ -80,7 +129,11 @@ function CreateComment() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Write a comment"
+            onKeyUp={handleComment}
           />
+          <div className="comment_circle" style={{ marginTop: "5px" }}>
+            <ClipLoader size={20} color="#1876f2" loading={loading} />
+          </div>
           <div
             className="comment_circle_icon"
             onClick={() => setPicker((prev) => !prev)}

@@ -7,6 +7,7 @@ import ReactsPopup from "./ReactsPopup";
 import CreateComment from "./CreateComment";
 import PostMenu from "./PostMenu";
 import { getReact, reactPost } from "../../functions/post";
+import Comment from "./Comment";
 
 function Post({ post, profile, user }) {
   const [visible, setVisible] = useState(false);
@@ -14,8 +15,14 @@ function Post({ post, profile, user }) {
   const [reacts, setReacts] = useState();
   const [check, setCheck] = useState();
   const [total, setTotal] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [count, setCount] = useState(1);
   useEffect(() => {
     getPostReacts();
+  }, [post]);
+
+  useEffect(() => {
+    setComments(post?.comments);
   }, [post]);
 
   const getPostReacts = async () => {
@@ -49,6 +56,10 @@ function Post({ post, profile, user }) {
         console.log(reacts);
       }
     }
+  };
+
+  const showMore = () => {
+    setCount((prev) => prev + 3);
   };
 
   return (
@@ -174,7 +185,7 @@ function Post({ post, profile, user }) {
         </div>
 
         <div className="to_right">
-          <div className="comments_count">13 comments</div>
+          <div className="comments_count">{comments.length} comments</div>
           <div className="share_count">1 share</div>
         </div>
       </div>
@@ -245,7 +256,23 @@ function Post({ post, profile, user }) {
 
       <div className="comments_wrap">
         <div className="comments_order"></div>
-        <CreateComment />
+        <CreateComment
+          postId={post._id}
+          setCount={setCount}
+          setComments={setComments}
+        />
+        {comments &&
+          comments
+            .sort((a, b) => {
+              return new Date(b.commentAt) - new Date(a.commentAt);
+            })
+            .slice(0, count)
+            .map((comment, i) => <Comment comment={comment} key={i} />)}
+        {count < comments.length && (
+          <div className="view_comments" onClick={() => showMore()}>
+            View more comments
+          </div>
+        )}
       </div>
       {showMenu && <PostMenu post={post} setShowMenu={setShowMenu} />}
 
