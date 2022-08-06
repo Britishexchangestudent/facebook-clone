@@ -17,10 +17,13 @@ import Friends from "./Friends";
 import Intro from "../../components/Intro";
 import { useMediaQuery } from "react-responsive";
 import useClickOutside from "../../helpers/clickOutside";
+import CreatePostPopup from "../../components/CreatePostPopup";
 
-function Profile({ setCreatePostVisible }) {
+function Profile({ getAllPosts }) {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState({});
+
+  const [createPostVisible, setCreatePostVisible] = useState(false);
 
   const { username } = useParams();
 
@@ -115,7 +118,17 @@ function Profile({ setCreatePostVisible }) {
 
   return (
     <div className="profile">
-      <Header page="profile" />
+      {createPostVisible && (
+        <CreatePostPopup
+          user={user}
+          setCreatePostVisible={setCreatePostVisible}
+          post={profile?.posts}
+          dispatch={dispatch}
+          profile
+        />
+      )}
+
+      <Header page="profile" getAllPosts={getAllPosts}/>
 
       <div className="profile_top" ref={profileTop}>
         <div className="profile_container">

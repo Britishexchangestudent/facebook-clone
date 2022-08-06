@@ -10,7 +10,7 @@ import Post from "../../components/Post";
 
 import "./styles.css";
 
-function Home({ setCreatePostVisible, posts }) {
+function Home({ setCreatePostVisible, posts, loading, getAllPosts }) {
   const { user } = useSelector((state) => ({ ...state }));
 
   const middle = useRef();
@@ -19,11 +19,11 @@ function Home({ setCreatePostVisible, posts }) {
 
   useEffect(() => {
     setHeight(middle.current.clientHeight);
-  }, []);
+  }, [loading, height]);
 
   return (
     <div className="home" style={{ height: `${height + 150}px` }}>
-      <Header page="home" />
+      <Header page="home" getAllPosts={getAllPosts} />
       <LeftHome user={user} />
       <div className="home_middle" ref={middle}>
         <Stories />

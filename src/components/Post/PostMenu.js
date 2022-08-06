@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import MenuItem from "./MenuItem";
 import useOnClickOutside from "../../helpers/clickOutside";
+import { deletePost, savePost } from "../../functions/post";
+import { saveAs } from "file-saver";
 
-function PostMenu({ post, setShowMenu }) {
+function PostMenu({ post, setShowMenu, checkSaved, setCheckSaved, postRef }) {
   const { user } = useSelector((state) => ({ ...state }));
 
   const [test, setTest] = useState(post.user._id === user.id ? true : false);
@@ -16,14 +18,46 @@ function PostMenu({ post, setShowMenu }) {
 
   const imageLength = post?.images?.length;
 
+  const saveHandler = async () => {
+    savePost(post._id, user.token);
+    if (checkSaved) {
+      setCheckSaved(false);
+    } else {
+      setCheckSaved(true);
+    }
+  };
+
+  const downloadImages = async () => {
+    post.images.map((img) => {
+      saveAs(img.url, "image.jpg");
+    });
+  };
+
+  const handleDelete = async () => {
+    const res = await deletePost(post._id, user.token);
+    if (res.status === "working") {
+      postRef.current.remove();
+    }
+  };
+
   return (
     <ul className="post_menu" ref={menuRef}>
       {test && <MenuItem icon="pin_icon" title="Pin Post" />}
-      <MenuItem
-        icon="save_icon"
-        title="Save Post"
-        subtitle="Add this to your saved items"
-      />
+      <div onClick={() => saveHandler()}>
+        {checkSaved ? (
+          <MenuItem
+            icon="save_icon"
+            title="Unsave Post"
+            subtitle="Remove this from your saved items"
+          />
+        ) : (
+          <MenuItem
+            icon="save_icon"
+            title="Save Post"
+            subtitle="Add this to your saved items"
+          />
+        )}
+      </div>
       <div className="line"></div>
       {test && <MenuItem icon="edit_icon" title="Edit Post" />}
       {!test && (
@@ -32,7 +66,11 @@ function PostMenu({ post, setShowMenu }) {
           title="Turn on notifications for this post"
         />
       )}
-      {imageLength && <MenuItem icon="download_icon" title="Download" />}
+      {imageLength && (
+        <div onClick={() => downloadImages()}>
+          <MenuItem icon="download_icon" title="Download" />
+        </div>
+      )}
       {imageLength && (
         <MenuItem icon="fullscreen_icon" title="Enter Fullscreen" />
       )}
@@ -50,11 +88,13 @@ function PostMenu({ post, setShowMenu }) {
       )}
       {test && <MenuItem icon="archive_icon" title="Move to archive" />}
       {test && (
-        <MenuItem
-          icon="trash_icon"
-          title="Move to trash"
-          subtitle="items in your trash are deleted after 30 days"
-        />
+        <div onClick={() => handleDelete()}>
+          <MenuItem
+            icon="trash_icon"
+            title="Move to trash"
+            subtitle="items in your trash are deleted after 30 days"
+          />
+        </div>
       )}
       {!test && <div className="line"></div>}
       {!test && (

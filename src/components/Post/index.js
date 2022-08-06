@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import "./styles.css";
@@ -17,6 +17,7 @@ function Post({ post, profile, user }) {
   const [total, setTotal] = useState(0);
   const [comments, setComments] = useState([]);
   const [count, setCount] = useState(1);
+  const [checkSaved, setCheckSaved] = useState();
   useEffect(() => {
     getPostReacts();
   }, [post]);
@@ -30,6 +31,7 @@ function Post({ post, profile, user }) {
     setReacts(res.reacts);
     setCheck(res.check);
     setTotal(res.total);
+    setCheckSaved(res.checkSaved);
   };
 
   const reactHandler = async (type) => {
@@ -62,8 +64,14 @@ function Post({ post, profile, user }) {
     setCount((prev) => prev + 3);
   };
 
+  const postRef = useRef(null);
+
   return (
-    <div className="post" style={{ width: `${profile && "100%"}` }}>
+    <div
+      className="post"
+      style={{ width: `${profile && "100%"}` }}
+      ref={postRef}
+    >
       {/* -------------------------------- HEADER -------------------------------- */}
 
       <div className="post_header">
@@ -175,9 +183,13 @@ function Post({ post, profile, user }) {
                 })
                 .slice(0, 3)
                 .map(
-                  (react) =>
+                  (react, i) =>
                     react.count > 0 && (
-                      <img src={`../../../reacts/${react.react}.svg`} alt="" />
+                      <img
+                        src={`../../../reacts/${react.react}.svg`}
+                        alt=""
+                        key={i}
+                      />
                     )
                 )}
           </div>
@@ -274,7 +286,15 @@ function Post({ post, profile, user }) {
           </div>
         )}
       </div>
-      {showMenu && <PostMenu post={post} setShowMenu={setShowMenu} />}
+      {showMenu && (
+        <PostMenu
+          post={post}
+          setShowMenu={setShowMenu}
+          checkSaved={checkSaved}
+          setCheckSaved={setCheckSaved}
+          postRef={postRef}
+        />
+      )}
 
       {/* -------------------------------- FOOTER -------------------------------- */}
     </div>

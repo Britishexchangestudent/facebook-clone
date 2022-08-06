@@ -11,7 +11,13 @@ import PostError from "./PostError";
 import dataURItoBlob from "../../helpers/dataURItoBlob";
 import { uploadImages } from "../../functions/uploadImages";
 
-function CreatePostPopup({ user, setCreatePostVisible }) {
+function CreatePostPopup({
+  user,
+  setCreatePostVisible,
+  post,
+  dispatch,
+  profile,
+}) {
   const [text, setText] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [images, setImages] = useState([]);
@@ -39,7 +45,11 @@ function CreatePostPopup({ user, setCreatePostVisible }) {
       setTimeout(() => {
         setLoading(false);
 
-        if (res === "data") {
+        if (res.status === "data") {
+          dispatch({
+            type: profile ? "PROFILE_POSTS" : "POSTS_SUCCESS",
+            payload: [res.data, ...post],
+          });
           setBackground("");
           setText("");
           setCreatePostVisible(false);
@@ -63,17 +73,24 @@ function CreatePostPopup({ user, setCreatePostVisible }) {
         formData.append("file", image);
       });
 
-      const res = await uploadImages(formData, path, user.token);
+      const response = await uploadImages(formData, path, user.token);
 
-      await createPost(null, null, text, res, user.id, user.token);
+      const res = await createPost(
+        null,
+        null,
+        text,
+        response,
+        user.id,
+        user.token
+      );
       setTimeout(() => {
-        setText("");
-        setCreatePostVisible(false);
-        setImages("");
-
         setLoading(false);
 
-        if (res === "data") {
+        if (res.status === "data") {
+          dispatch({
+            type: profile ? "PROFILE_POSTS" : "POSTS_SUCCESS",
+            payload: [res.data, ...post],
+          });
           setText("");
           setImages("");
           setCreatePostVisible(false);
@@ -94,7 +111,11 @@ function CreatePostPopup({ user, setCreatePostVisible }) {
       setTimeout(() => {
         setLoading(false);
 
-        if (res === "data") {
+        if (res.status === "data") {
+          dispatch({
+            type: profile ? "PROFILE_POSTS" : "POSTS_SUCCESS",
+            payload: [res.data, ...post],
+          });
           setBackground("");
           setText("");
           setCreatePostVisible(false);

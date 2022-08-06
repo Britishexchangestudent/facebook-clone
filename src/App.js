@@ -57,6 +57,8 @@ function App() {
         <CreatePostPopup
           user={user}
           setCreatePostVisible={setCreatePostVisible}
+          post={posts}
+          dispatch={dispatch}
         />
       )}
 
@@ -64,18 +66,23 @@ function App() {
         <Route element={<LoggedInRoutes />}>
           <Route
             path="/profile"
-            element={<Profile setCreatePostVisible={setCreatePostVisible} />}
+            element={<Profile setCreatePostVisible={setCreatePostVisible} getAllPosts={getAllPosts} />}
             exact
           />
           <Route
             path="/profile/:username"
-            element={<Profile setCreatePostVisible={setCreatePostVisible} />}
+            element={<Profile setCreatePostVisible={setCreatePostVisible} getAllPosts={getAllPosts} />}
             exact
           />
           <Route
             path="/"
             element={
-              <Home setCreatePostVisible={setCreatePostVisible} posts={posts} />
+              <Home
+                setCreatePostVisible={setCreatePostVisible}
+                posts={posts}
+                loading={loading}
+                getAllPosts={getAllPosts}
+              />
             }
             exact
           />
