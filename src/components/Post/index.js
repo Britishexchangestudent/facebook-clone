@@ -198,7 +198,7 @@ function Post({ post, profile, user }) {
 
         <div className="to_right">
           <div className="comments_count">{comments.length} comments</div>
-          <div className="share_count">1 share</div>
+          <div className="share_count">0 share</div>
         </div>
       </div>
 

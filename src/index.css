@@ -36,6 +36,7 @@ a {
   --shadow-inset: rgba(255, 255, 255, 0.5);
 }
 
+
 /* Buttons */
 
 .blue_btn {
@@ -78,7 +79,7 @@ a {
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: #000;
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +111,6 @@ a {
 }
 
 /* Hovers */
-
 
 .card {
   height: 500px;

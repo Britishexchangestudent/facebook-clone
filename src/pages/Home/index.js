@@ -31,7 +31,7 @@ function Home({ setCreatePostVisible, posts, loading, getAllPosts }) {
         <CreatePost user={user} setCreatePostVisible={setCreatePostVisible} />
         <div className="posts">
           {posts.map((post, i) => (
-            <Post key={post.id} post={post} user={user} />
+            <Post key={i} post={post} user={user} />
           ))}
         </div>
       </div>

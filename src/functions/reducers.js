@@ -45,3 +45,17 @@ export function photosReducer(state, action) {
       return state;
   }
 }
+
+export function friendsReducer(state, action) {
+  switch (action.type) {
+    case "FRIENDS_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "FRIENDS_SUCCESS":
+      return { ...state, data: action.payload, loading: false, error: "" };
+    case "FRIENDS_ERROR":
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+}

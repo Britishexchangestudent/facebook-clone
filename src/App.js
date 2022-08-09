@@ -11,10 +11,11 @@ import { useSelector } from "react-redux";
 import { useState, useReducer, useEffect } from "react";
 import axios from "axios";
 import { postsReducer } from "./functions/reducers";
+import Friends from "./pages/friends";
 
 function App() {
   const [createPostVisible, setCreatePostVisible] = useState(false);
-  const { user } = useSelector((state) => ({ ...state }));
+  const { user, darkTheme } = useSelector((state) => ({ ...state }));
 
   const [{ loading, error, posts }, dispatch] = useReducer(postsReducer, {
     loading: false,
@@ -52,7 +53,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className={darkTheme && "dark"}>
       {createPostVisible && (
         <CreatePostPopup
           user={user}
@@ -66,12 +67,43 @@ function App() {
         <Route element={<LoggedInRoutes />}>
           <Route
             path="/profile"
-            element={<Profile setCreatePostVisible={setCreatePostVisible} getAllPosts={getAllPosts} />}
+            element={
+              <Profile
+                setCreatePostVisible={setCreatePostVisible}
+                getAllPosts={getAllPosts}
+              />
+            }
             exact
           />
           <Route
             path="/profile/:username"
-            element={<Profile setCreatePostVisible={setCreatePostVisible} getAllPosts={getAllPosts} />}
+            element={
+              <Profile
+                setCreatePostVisible={setCreatePostVisible}
+                getAllPosts={getAllPosts}
+              />
+            }
+            exact
+          />
+
+          <Route
+            path="/friends"
+            element={
+              <Friends
+                setCreatePostVisible={setCreatePostVisible}
+                getAllPosts={getAllPosts}
+              />
+            }
+            exact
+          />
+          <Route
+            path="/friends/:type"
+            element={
+              <Friends
+                setCreatePostVisible={setCreatePostVisible}
+                getAllPosts={getAllPosts}
+              />
+            }
             exact
           />
           <Route
