@@ -17,7 +17,6 @@ function UpdateProfilePicture({
   setError,
 }) {
   const dispatch = useDispatch();
-  
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -61,22 +60,18 @@ function UpdateProfilePicture({
     [croppedAreaPixels]
   );
 
-  const updateProfilePicture = async () => {
+  const updateProfilePicture2 = async () => {
     try {
       setLoading(true);
       let img = await getCroppedImage();
-
       let blob = await fetch(img).then((b) => b.blob());
-
       const path = `${user.username}/profile_pictures`;
       let formData = new FormData();
       formData.append("file", blob);
       formData.append("path", path);
       const res = await uploadImages(formData, path, user.token);
-      console.log(`res[0]`, res[0]);
-      const updatedPic = await updateProfilePic(res[0].url, user.token);
-      console.log(`updatedPic`, updatedPic);
-      if (updatedPic === "data") {
+      const updated_picture = await updateProfilePic(res[0].url, user.token);
+      if (updated_picture === "data") {
         const new_post = await createPost(
           "profilePicture",
           null,
@@ -85,35 +80,35 @@ function UpdateProfilePicture({
           user.id,
           user.token
         );
-        if (new_post === "data") {
-          setTimeout(() => {
-            setLoading(false);
-            setImage("");
-            profileRef.current.style.backgroundImage = `url(${res[0].url})`;
-            Cookies.set(
-              "user",
-              JSON.stringify({
-                ...user,
-                picture: res[0].url,
-              })
-            );
-            dispatch({ type: "UPDATEPICTURE", payload: res[0].url });
-            setShow(false);
-          }, 2000);
-        } else {
-          setError(new_post);
-          console.log(`babababa`);
+        if (new_post.status === "data") {
           setLoading(false);
+          setImage("");
+          profileRef.current.style.backgroundImage = `url(${res[0].url})`;
+          Cookies.set(
+            "user",
+            JSON.stringify({
+              ...user,
+              picture: res[0].url,
+            })
+          );
+          dispatch({
+            type: "UPDATEPICTURE",
+            payload: res[0].url,
+          });
+          setShow(false);
+        } else {
+          setLoading(false);
+
+          setError(new_post);
         }
       } else {
-        setError(updatedPic);
-        console.log(`wawawawawa`);
         setLoading(false);
+
+        setError(updated_picture);
       }
     } catch (error) {
       setLoading(false);
-      setError(error.response.data.error);
-      console.log(`zazazaaza`);
+      setError(error.response.data.message);
     }
   };
 
@@ -194,7 +189,7 @@ function UpdateProfilePicture({
         <button
           className="blue_btn"
           disabled={loading}
-          onClick={() => updateProfilePicture()}
+          onClick={() => updateProfilePicture2()}
         >
           {loading ? (
             <ClipLoader color="#fff" loading={loading} size={10} />

@@ -118,7 +118,7 @@ function Cover({ cover, visitor, photos }) {
           user.id,
           user.token
         );
-        if (new_post === "data") {
+        if (new_post.status === "data") {
           setTimeout(() => {
             setLoading(false);
             setCoverPic("");

@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const updateProfilePic = async (url, token) => {
   try {
     const { data } = await axios.put(
@@ -8,7 +9,9 @@ export const updateProfilePic = async (url, token) => {
         url,
       },
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     return "data";
