@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import ClipLoader from "react-spinners/ClipLoader";
 import CreatePost from "../../components/CreatePost";
 import Header from "../../components/Header";
 import LeftHome from "../../components/Home/Left";
@@ -29,11 +30,17 @@ function Home({ setCreatePostVisible, posts, loading, getAllPosts }) {
         <Stories />
         {user.verified === false && <SendVerification user={user} />}
         <CreatePost user={user} setCreatePostVisible={setCreatePostVisible} />
-        <div className="posts">
-          {posts.map((post, i) => (
-            <Post key={i} post={post} user={user} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="sekelton_loader">
+            <ClipLoader color="#1876f2" />
+          </div>
+        ) : (
+          <div className="posts">
+            {posts.map((post, i) => (
+              <Post key={i} post={post} user={user} />
+            ))}
+          </div>
+        )}
       </div>
       <RightHome />
     </div>

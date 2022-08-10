@@ -17,7 +17,10 @@ import Friends from "./Friends";
 import Intro from "../../components/Intro";
 import { useMediaQuery } from "react-responsive";
 import useClickOutside from "../../helpers/clickOutside";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import CreatePostPopup from "../../components/CreatePostPopup";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Profile({ getAllPosts }) {
   const navigate = useNavigate();
@@ -128,21 +131,110 @@ function Profile({ getAllPosts }) {
         />
       )}
 
-      <Header page="profile" getAllPosts={getAllPosts}/>
+      <Header page="profile" getAllPosts={getAllPosts} />
 
       <div className="profile_top" ref={profileTop}>
         <div className="profile_container">
-          <Cover
-            cover={profile?.cover}
-            visitor={visitor}
-            photos={photos.resources}
-          />
-          <ProfilePictureInfo
-            profile={profile}
-            visitor={visitor}
-            photos={photos.resources}
-            othername={othername}
-          />
+          {loading ? (
+            <>
+              <div className="profile_cover">
+                <Skeleton
+                  height="347px"
+                  containerClassName="avatar-skeleton"
+                  style={{ borderRadius: "8px" }}
+                />
+              </div>
+              <div
+                className="profile_img_wrap"
+                style={{
+                  marginBottom: "-3rem",
+                  transform: "translateY(-8px)",
+                  zIndex: "99",
+                }}
+              >
+                <div className="profile_w_left">
+                  <Skeleton
+                    circle
+                    height="180px"
+                    width="180px"
+                    containerClassName="avatar-skeleton"
+                    style={{ transform: "translateY(-3.3rem)" }}
+                  />
+                  <div className="profile_w_col">
+                    <div className="profile_name">
+                      <Skeleton
+                        height="35px"
+                        width="200px"
+                        containerClassName="avatar-skeleton"
+                      />
+                      <Skeleton
+                        height="30px"
+                        width="100px"
+                        containerClassName="avatar-skeleton"
+                        style={{ transform: "translateY(2.5px)" }}
+                      />
+                    </div>
+                    <div className="profile_friend_count">
+                      <Skeleton
+                        height="20px"
+                        width="90px"
+                        containerClassName="avatar-skeleton"
+                        style={{ marginTop: "5px" }}
+                      />
+                    </div>
+                    <div className="profile_friend_img">
+                      {Array.from(new Array(6), (val, i) => i + 1).map(
+                        (id, i) => (
+                          <Skeleton
+                            circle
+                            height="32px"
+                            width="32px"
+                            containerClassName="avatar-skeleton"
+                            style={{ transform: `translateX(${-i * 7}px)` }}
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className={`friendship ${!visitor && "fix"}`}>
+                  <Skeleton
+                    height="36px"
+                    width={120}
+                    containerClassName="avatar-skeleton"
+                  />
+                  <div className="flex">
+                    <Skeleton
+                      height="36px"
+                      width={120}
+                      containerClassName="avatar-skeleton"
+                    />
+                    {visitor && (
+                      <Skeleton
+                        height="36px"
+                        width={120}
+                        containerClassName="avatar-skeleton"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <Cover
+                cover={profile?.cover}
+                visitor={visitor}
+                photos={photos.resources}
+              />
+              <ProfilePictureInfo
+                profile={profile}
+                visitor={visitor}
+                photos={photos.resources}
+                othername={othername}
+              />
+            </>
+          )}
           <ProfileMenu />
         </div>
       </div>
@@ -162,13 +254,49 @@ function Profile({ getAllPosts }) {
               }`}
             >
               <div className="profile_left" ref={leftSide}>
-                <Intro
-                  detailss={profile.details}
-                  visitor={visitor}
-                  setOthername={setOthername}
-                />
-                <Photos username={userName} photos={photos} />
-                <Friends friends={profile.friends} />
+                {loading ? (
+                  <>
+                    <div className="profile_card">
+                      <div className="profile_card_header">Intro</div>
+                      <div className="sekelton_loader">
+                        <ClipLoader color="#1876f2" />
+                      </div>
+                    </div>
+                    <div className="profile_card">
+                      <div className="profile_card_header">
+                        Photos
+                        <div className="profile_header_link">
+                          See all photos
+                        </div>
+                      </div>
+                      <div className="sekelton_loader">
+                        <ClipLoader color="#1876f2" />
+                      </div>
+                    </div>
+                    <div className="profile_card">
+                      <div className="profile_card_header">
+                        Friends
+                        <div className="profile_header_link">
+                          See all friends
+                        </div>
+                      </div>
+                      <div className="sekelton_loader">
+                        <ClipLoader color="#1876f2" />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Intro
+                      detailss={profile.details}
+                      visitor={visitor}
+                      setOthername={setOthername}
+                    />
+
+                    <Photos username={userName} photos={photos} />
+                    <Friends friends={profile.friends} />
+                  </>
+                )}
                 <div className={`fb_copyright ${"relative_fb_copyright"}`}>
                   <Link to="/">Privacy </Link>
                   <span>. </span>
